@@ -8,14 +8,14 @@ const port = process.env.PORT || process.env.NODE_PORT || 3000;
 
 const urlStruct = {
   '/': htmlHandler.getIndex,
-  '/style.css': htmlHandler.getCss,
-  '/success': jsonHandler.success,
-  '/badRequest': jsonHandler.badRequest,
-  '/unauthorized': jsonHandler.unauthorized,
-  '/forbidden': jsonHandler.forbidden,
-  '/internal': jsonHandler.internal,
-  '/notImplemented': jsonHandler.notImplemented,
-  notFound: jsonHandler.notFound,
+ '/output.css': htmlHandler.getCss,
+  // '/success': jsonHandler.success,
+  // '/badRequest': jsonHandler.badRequest,
+  // '/unauthorized': jsonHandler.unauthorized,
+  // '/forbidden': jsonHandler.forbidden,
+  // '/internal': jsonHandler.internal,
+  // '/notImplemented': jsonHandler.notImplemented,
+  // notFound: jsonHandler.notFound,
 };
 
 const onRequest = (request, response) => {
@@ -23,20 +23,22 @@ const onRequest = (request, response) => {
 
   const params = query.parse(parsedUrl.query);
 
-  // grab the accept headers and split into array at commas
+  // //grab the accept headers and split into array at commas
   const acceptedTypes = request.headers.accept.split(',');
 
   const handlerFunction = urlStruct[parsedUrl.pathname];
 
-  if (handlerFunction) {
-    handlerFunction(request, response, acceptedTypes, params);
-  } else {
-    // send to index (but will normally send to 404 page)
-    urlStruct.notFound(request, response, acceptedTypes, params);
-  }
+  // if (handlerFunction) {
+  //   //handlerFunction(request, response, acceptedTypes, params);
+  // } else {
+  //   // send to index (but will normally send to 404 page)
+  //   //urlStruct.notFound(request, response, acceptedTypes, params);
+  // }
 
-  console.log(`URL: ${request.url}`);
-  console.dir(parsedUrl);
+  handlerFunction(request, response, acceptedTypes, params);
+
+  //console.log(`URL: ${request.url}`);
+  //console.dir(parsedUrl);
 };
 
 http.createServer(onRequest).listen(port, () => {
