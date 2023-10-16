@@ -1,92 +1,59 @@
-const respond = (request, response, status, object, type = 'application/json') => {
-  response.writeHead(status, { 'Content-Type': type });
+const recipes = {};
 
-  // dont stringify if xml
-  if (type === 'text/xml') {
-    response.write(object);
-  } else {
-    response.write(JSON.stringify(object));
-  }
+const respond = (request, response, status, object) => {
+  response.writeHead(status, { 'Content-Type': 'application/json' });
+  response.write(JSON.stringify(object));
   response.end();
 };
 
-const checkIfXml = (request, response, acceptedTypes, responseJSON, status) => {
-  // check if xml
-  if (acceptedTypes[0] === 'text/xml') {
-    let xmlResponse = '<response>';
-
-    xmlResponse += `<message>${responseJSON.message}</message>`;
-    if (responseJSON.id) { xmlResponse += `<id>${responseJSON.id}</id>`; }
-    xmlResponse += '</response>';
-
-    return respond(request, response, status, xmlResponse, 'text/xml');
-  }
-  return respond(request, response, status, responseJSON);
+const respondMeta = (request, response, status) => {
+  response.writeHead(status, { 'Content-Type': 'application/json' });
+  response.end();
 };
 
-const success = (request, response, acceptedTypes) => {
-  const responseJSON = {
-    message: 'This is a successful response',
-  };
+const getRecipes = (request, response) => {
+  const responseJSON = { recipes };
 
-  return checkIfXml(request, response, acceptedTypes, responseJSON, 200);
+  respondMeta(request, response, 200, responseJSON);
 };
 
-const badRequest = (request, response, acceptedTypes, params) => {
+const getRecipesMeta = (request, response) => {
+  return respondMeta(request, response, 200);
+};
+
+const addRecipe = (request, response, body) => {
   const responseJSON = {
-    message: 'This request has the required parameters',
+    message: 'Recipe name is required',
   };
 
-  if (!params.valid || params.valid !== 'true') {
-    responseJSON.message = 'Missing valid query param set to true';
-    responseJSON.id = 'badRequest';
-
-    return checkIfXml(request, response, acceptedTypes, responseJSON, 400);
+  if (!body.name) {
+    responseJSON.id = 'addRecipeMissingParam';
+    return respond(request, response, 400, responseJSON);
   }
 
-  return checkIfXml(request, response, acceptedTypes, responseJSON, 200);
-};
+  let responseCode = 204;
 
-const unauthorized = (request, response, acceptedTypes, params) => {
-  const responseJSON = {
-    message: 'This request has the required parameters',
-  };
-
-  if (!params.loggedIn || params.loggedIn !== 'yes') {
-    responseJSON.message = 'Missing logged in query parameter set to \'yes\'';
-    responseJSON.id = 'unauthorized';
-
-    return checkIfXml(request, response, acceptedTypes, responseJSON, 401);
+  if (!recipes[body.name]) {
+    responseCode = 201;
+    recipes[body.name] = {
+      name: body.name,
+    }
   }
 
-  return checkIfXml(request, response, acceptedTypes, responseJSON, 200);
-};
+  recipes[body.name].description = body.description;
+  recipes[body.name].prepTime = body.prepTime;
+  recipes[body.name].cookTime = body.cookTime;
+  recipes[body.name].difficulty = body.difficulty;
+  recipes[body.name].rating = body.rating;
+  recipes[body.name].ingredients = body.ingredients;
+  recipes[body.name].steps = body.steps;
 
-const forbidden = (request, response, acceptedTypes) => {
-  const responseJSON = {
-    message: 'This request is forbidden',
-    id: 'forbidden',
-  };
+  if (responseCode === 201) {
+    responseJSON.message = 'Created successfully';
+    return respond(request, response, responseCode, responseJSON);
+  }
 
-  return checkIfXml(request, response, acceptedTypes, responseJSON, 403);
-};
-
-const internal = (request, response, acceptedTypes) => {
-  const responseJSON = {
-    message: 'Internal server error',
-    id: 'internal',
-  };
-
-  return checkIfXml(request, response, acceptedTypes, responseJSON, 500);
-};
-
-const notImplemented = (request, response, acceptedTypes) => {
-  const responseJSON = {
-    message: 'This page is not implemented',
-    id: 'notImplemented',
-  };
-
-  return checkIfXml(request, response, acceptedTypes, responseJSON, 501);
+  return respondMeta(request, response, responseCode);
 };
 
 const notFound = (request, response, acceptedTypes) => {
@@ -95,15 +62,17 @@ const notFound = (request, response, acceptedTypes) => {
     id: 'notFound',
   };
 
-  checkIfXml(request, response, acceptedTypes, responseJSON, 404);
+  return respond(request, response, 404, responseJSON);
+};
+
+const notFoundMeta = (request, response) => {
+  return respondMeta(request, response, 404);
 };
 
 module.exports = {
-  success,
-  badRequest,
-  unauthorized,
-  forbidden,
-  internal,
-  notImplemented,
+  getRecipes,
+  getRecipesMeta,
+  addRecipe,
   notFound,
+  notFoundMeta
 };

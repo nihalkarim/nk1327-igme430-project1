@@ -6,16 +6,49 @@ const jsonHandler = require('./jsonResponses.js');
 
 const port = process.env.PORT || process.env.NODE_PORT || 3000;
 
+const parseBody = (request, response, callback) => {
+  const body = [];
+
+  request.on('error', (err) => {
+    console.dir(err);
+    response.statusCode = 400;
+    response.end();
+  });
+
+  request.on('data', (chunk) => {
+    body.push(chunk);
+  });
+
+  request.on('end', () => {
+    console.log(body);
+
+    const bodyString = Buffer.concat(body).toString();
+    console.log(bodyString);
+
+    const bodyParams = query.parse(bodyString);
+    console.log(bodyParams);
+
+    callback(request, response, bodyParams);
+  });
+}
+
 const urlStruct = {
-  '/': htmlHandler.getIndex,
- '/output.css': htmlHandler.getCss,
-  // '/success': jsonHandler.success,
-  // '/badRequest': jsonHandler.badRequest,
-  // '/unauthorized': jsonHandler.unauthorized,
-  // '/forbidden': jsonHandler.forbidden,
-  // '/internal': jsonHandler.internal,
-  // '/notImplemented': jsonHandler.notImplemented,
-  // notFound: jsonHandler.notFound,
+  'GET': {
+    '/': htmlHandler.getIndex,
+    '/output.css': htmlHandler.getCss,
+    '/getRecipes': jsonHandler.getRecipes,
+    '/addRecipe': jsonHandler.addRecipe,
+    '/notReal': jsonHandler.notFound,
+    notFound: jsonHandler.notFound,
+  },
+  'HEAD': {
+    '/getRecipes': jsonHandler.getRecipesMeta,
+    '/notReal': jsonHandler.notFoundMeta,
+    notFound: jsonHandler.notFoundMeta,
+  },
+  'POST': {
+    '/addRecipe': (request, response) => parseBody(request, response, jsonHandler.addRecipe),
+  }
 };
 
 const onRequest = (request, response) => {
@@ -23,19 +56,15 @@ const onRequest = (request, response) => {
 
   const params = query.parse(parsedUrl.query);
 
-  // //grab the accept headers and split into array at commas
-  const acceptedTypes = request.headers.accept.split(',');
+  if (!urlStruct[request.method]) {
+    return urlStruct['HEAD'].notFound(request, response);
+  }
 
-  const handlerFunction = urlStruct[parsedUrl.pathname];
-
-  // if (handlerFunction) {
-  //   //handlerFunction(request, response, acceptedTypes, params);
-  // } else {
-  //   // send to index (but will normally send to 404 page)
-  //   //urlStruct.notFound(request, response, acceptedTypes, params);
-  // }
-
-  handlerFunction(request, response, acceptedTypes, params);
+  if (urlStruct[request.method][parsedUrl.pathname]) {
+    urlStruct[request.method][parsedUrl.pathname](request, response);
+  } else {
+    urlStruct[request.method].notFound(request, response);
+  }
 
   //console.log(`URL: ${request.url}`);
   //console.dir(parsedUrl);

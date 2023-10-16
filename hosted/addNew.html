@@ -4,19 +4,21 @@
 <head>
 	<title>Our simple HTTP server</title>
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link href="/hosted/style.css" rel="stylesheet">
 	<link href="/dist/output.css" rel="stylesheet">
 	<script src="https://kit.fontawesome.com/306d133c2c.js" crossorigin="anonymous"></script>
+	<script src="/client/client.js"></script>
 </head>
 
 <body>
 	<form id="recipeForm" action="/addRecipe" method="post" class="grid grid-cols-3 gap-5 m-5">
-		<div class="bg-lime-300 flex flex-wrap">
+		<div class="">
 			<!-- name -->
-			<div class="w-full">
-				<label class="block uppercase text-gray-700 text-xs font-bold mb-2" for="name">First
-					Name</label>
+			<div class="w-full my-2">
+				<label class="block uppercase text-gray-700 text-xs font-bold mb-2" for="name"> First
+					Name </label>
 				<input id="nameField" type="text" name="name" placeholder="Name"
-					class="block w-full bg-gray-100 text-gray-700 border border-violet-300 rounded py-3 px-4 mb-3" />
+					class="block w-full bg-gray-100 text-gray-700  rounded py-3 px-4 mb-3" />
 			</div>
 
 
@@ -25,45 +27,60 @@
 				<label class="block uppercase text-gray-700 text-xs font-bold mb-2"
 					for="description">Description</label>
 				<input id="descriptionField" type="text" name="description" placeholder="description"
-					class="block w-full h-8 bg-gray-100 text-gray-700 border border-violet-300 rounded py-3 px-4 mb-3" />
+					class="block w-full h-40 bg-gray-100 text-gray-700 border-violet-300 rounded py-3 px-4 mb-3" />
 			</div>
 
-
+			<br>
 			<!-- prep time -->
-			<div>
-				<i class="fa-regular fa-clock"></i>
-				<span>Prep Time: </span>
-				<input id="prepTimeField" type="number" name="prepTime" />
+			<div class="flex flex-row">
+				<div class="pl-4">
+					<i class="fa-regular fa-clock"></i>
+					<span>Prep Time: </span>
+				</div>
+				<input id="prepTimeHours" type="duration" name="prepTimeHours" min="0" class="" />
+				<span>h</span>
+				<input id="prepTimeMin" type="time" name="prepTimeMin" class="border" />
+				<span>min </span>
 			</div>
 
+			<br>
 			<!-- cook time -->
-			<div>
-				<i class="fa-solid fa-clock"></i>
-				<span>Cook Time: </span>
-				<input id="cookTimeField" type="number" name="cookTime" />
+			<div class="flex flex-row p-4">
+				<div class="pl-4">
+					<i class="fa-solid fa-clock"></i>
+					<span>Cook Time: </span>
+				</div>
+				<input id="cookTimeHours" type="number" name="cookTimeHours" class="w-12 border" />
+				<span>h </span>
+				<input id="cookTimeMin" type="number" name="cookTimeMin" class="w-12 border-b-2" />
+				<span>min </span>
 			</div>
 
+			<br>
 			<!-- difficulty -->
 			<div>
 				<span>Difficulty: </span>
-				<span><input id="difficultyField" type="number" name="difficulty" /> /10<i
-						class="fa-solid fa-star"></i></span>
+				<span><input id="difficultyField" type="number" name="difficulty"
+						class="w-3 border-b-4 border-b-orange-950" /> / 10 <i class="fa-solid fa-star"></i></span>
 			</div>
 
+			<br>
 			<!-- rating -->
 			<div>
 				<span>Rating: </span>
-				<span><input id="ratingField" type="number" name="rating" /> /10<i class="fa-solid fa-star"></i></span>
+				<span><input id="ratingField" type="number" name="rating" class="w-12 border-b-4 border-b-orange-950" />
+					/ 10 <i class="fa-solid fa-star"></i></span>
 			</div>
 		</div>
 
-		<div class="bg-lime-400">
+		<div class="">
 			<!-- ingredients -->
-			<label for="description">Ingredients </label>
-			<input id="ingredientsField" type="text" name="ingredients" />
+			<label for="description" class="block uppercase text-gray-700 text-xs font-bold mb-2">Ingredients </label>
+			<input id="ingredientsField" type="text" name="ingredients"
+				class="block h-full w-full bg-gray-200 text-gray-700 border rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white" />
 		</div>
 
-		<div class="bg-lime-300">
+		<div class="">
 			<!-- steps -->
 			<label for="steps">Steps: </label>
 			<input id="stepsField" type="text" name="steps" />
@@ -71,7 +88,8 @@
 		</div>
 	</form>
 
-	<form class="w-full max-w-lg">
+
+	<!-- <form class="w-full max-w-lg">
 		<div class="flex flex-wrap -mx-3 mb-6">
 			<div class="w-full md:w-1/2 px-3 mb-6 md:mb-0">
 				<label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-first-name">
@@ -139,7 +157,7 @@
 					id="grid-zip" type="text" placeholder="90210">
 			</div>
 		</div>
-	</form>
+	</form> -->
 </body>
 
 </html>
