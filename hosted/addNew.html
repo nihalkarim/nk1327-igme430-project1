@@ -2,16 +2,22 @@
 <html lang="en">
 
 <head>
-	<title>Our simple HTTP server</title>
+	<title>Add New Recipe</title>
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<link href="/hosted/style.css" rel="stylesheet">
-	<link href="/dist/output.css" rel="stylesheet">
+
+	<link href="/style.css" rel="stylesheet">
+	<link href="/output.css" rel="stylesheet">
+
 	<script src="https://kit.fontawesome.com/306d133c2c.js" crossorigin="anonymous"></script>
+
 	<script src="/client/client.js"></script>
+
+	<script>
+	</script>
 </head>
 
 <body>
-	<form id="recipeForm" action="/addRecipe" method="post" class="grid grid-cols-3 gap-5 m-5">
+	<form id="recipeForm" action="/" method="post" class="grid grid-cols-3 gap-5 m-5" target="">
 		<div class="">
 			<!-- name -->
 			<div class="w-full my-2">
@@ -30,6 +36,13 @@
 					class="block w-full h-40 bg-gray-100 text-gray-700 border-violet-300 rounded py-3 px-4 mb-3" />
 			</div>
 
+			<!-- image link -->
+			<div class="w-full">
+				<label class="block uppercase text-gray-700 text-xs font-bold mb-2" for="image">Image Link</label>
+				<input id="imageField" type="text" name="image" placeholder="Image Address"
+					class="block w-full h-40 bg-gray-100 text-gray-700 border-violet-300 rounded py-3 px-4 mb-3" />
+			</div>
+
 			<br>
 			<!-- prep time -->
 			<div class="flex flex-row">
@@ -37,9 +50,9 @@
 					<i class="fa-regular fa-clock"></i>
 					<span>Prep Time: </span>
 				</div>
-				<input id="prepTimeHours" type="duration" name="prepTimeHours" min="0" class="" />
+				<input id="prepTimeHours" type="number" name="prepTimeHours" min="0" class="w-12 border" min="0" />
 				<span>h</span>
-				<input id="prepTimeMin" type="time" name="prepTimeMin" class="border" />
+				<input id="prepTimeMin" type="number" name="prepTimeMin" class="border-b-4 " min="0" max="59" />
 				<span>min </span>
 			</div>
 
@@ -50,9 +63,9 @@
 					<i class="fa-solid fa-clock"></i>
 					<span>Cook Time: </span>
 				</div>
-				<input id="cookTimeHours" type="number" name="cookTimeHours" class="w-12 border" />
+				<input id="cookTimeHours" type="number" name="cookTimeHours" class="w-12 border" min="0" />
 				<span>h </span>
-				<input id="cookTimeMin" type="number" name="cookTimeMin" class="w-12 border-b-2" />
+				<input id="cookTimeMin" type="number" name="cookTimeMin" class="w-12 border-b-2" min="0" max="59" />
 				<span>min </span>
 			</div>
 
@@ -60,7 +73,7 @@
 			<!-- difficulty -->
 			<div>
 				<span>Difficulty: </span>
-				<span><input id="difficultyField" type="number" name="difficulty"
+				<span><input id="difficultyField" type="number" name="difficulty" min="0" max="10"
 						class="w-3 border-b-4 border-b-orange-950" /> / 10 <i class="fa-solid fa-star"></i></span>
 			</div>
 
@@ -68,13 +81,14 @@
 			<!-- rating -->
 			<div>
 				<span>Rating: </span>
-				<span><input id="ratingField" type="number" name="rating" class="w-12 border-b-4 border-b-orange-950" />
+				<span><input id="ratingField" type="number" name="rating" min="0" max="10"
+						class="w-12 border-b-4 border-b-orange-950" />
 					/ 10 <i class="fa-solid fa-star"></i></span>
 			</div>
 		</div>
 
+		<!-- ingredients -->
 		<div class="">
-			<!-- ingredients -->
 			<label for="description" class="block uppercase text-gray-700 text-xs font-bold mb-2">Ingredients </label>
 			<input id="ingredientsField" type="text" name="ingredients"
 				class="block h-full w-full bg-gray-200 text-gray-700 border rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white" />
@@ -84,10 +98,13 @@
 			<!-- steps -->
 			<label for="steps">Steps: </label>
 			<input id="stepsField" type="text" name="steps" />
-			<input type="submit" name="addRecipe" id="addRecipe" value="Add Recipe">
+			<!-- add recipe -->
+			<input type="submit" name="addRecipe" id="addRecipe" value="Add Recipe" class="border bg-red"
+				href="client.html">
 		</div>
 	</form>
 
+	<img src="" alt="">
 
 	<!-- <form class="w-full max-w-lg">
 		<div class="flex flex-wrap -mx-3 mb-6">

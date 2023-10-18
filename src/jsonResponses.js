@@ -14,20 +14,18 @@ const respondMeta = (request, response, status) => {
 const getRecipes = (request, response) => {
   const responseJSON = { recipes };
 
-  respondMeta(request, response, 200, responseJSON);
+  respond(request, response, 200, responseJSON);
 };
 
-const getRecipesMeta = (request, response) => {
-  return respondMeta(request, response, 200);
-};
+const getRecipesMeta = (request, response) => respondMeta(request, response, 200);
 
 const addRecipe = (request, response, body) => {
   const responseJSON = {
-    message: 'Recipe name is required',
+    message: 'Recipe name and image link are required',
   };
 
-  if (!body.name) {
-    responseJSON.id = 'addRecipeMissingParam';
+  if (!body.name || !body.image) {
+    responseJSON.id = 'addRecipeMissingParams';
     return respond(request, response, 400, responseJSON);
   }
 
@@ -35,12 +33,11 @@ const addRecipe = (request, response, body) => {
 
   if (!recipes[body.name]) {
     responseCode = 201;
-    recipes[body.name] = {
-      name: body.name,
-    }
+    recipes[body.name] = { name: body.name };
   }
 
   recipes[body.name].description = body.description;
+  recipes[body.name].image = body.image;
   recipes[body.name].prepTime = body.prepTime;
   recipes[body.name].cookTime = body.cookTime;
   recipes[body.name].difficulty = body.difficulty;
@@ -50,13 +47,14 @@ const addRecipe = (request, response, body) => {
 
   if (responseCode === 201) {
     responseJSON.message = 'Created successfully';
+    // htmlHandler.getIndex;
     return respond(request, response, responseCode, responseJSON);
   }
 
-  return respondMeta(request, response, responseCode);
+  return respond(request, response, responseCode);
 };
 
-const notFound = (request, response, acceptedTypes) => {
+const notFound = (request, response) => {
   const responseJSON = {
     message: 'The page you are looking for was not found.',
     id: 'notFound',
@@ -65,14 +63,12 @@ const notFound = (request, response, acceptedTypes) => {
   return respond(request, response, 404, responseJSON);
 };
 
-const notFoundMeta = (request, response) => {
-  return respondMeta(request, response, 404);
-};
+const notFoundMeta = (request, response) => respondMeta(request, response, 404);
 
 module.exports = {
   getRecipes,
   getRecipesMeta,
   addRecipe,
   notFound,
-  notFoundMeta
+  notFoundMeta,
 };

@@ -1,11 +1,21 @@
+const recipeObject = require('../src/jsonResponses');
+
 const handleResponse = async (response) => {
-    const content = document.querySelector('#content');
+    const content = document.querySelector('body');
 
     let obj = await response.json();
 
-    if (obj.message) {
-        content.innerHTML += `<p>${obj.message}</p>`;
-    }
+    content.innerHTML = `<p>${obj}</p>`;
+
+    // let recipeDiv = document.createElement('div');
+    // let recipeImage = document.createElement('img');
+    // let recipeName = document.createElement('h3');
+
+    // recipeDiv.className = 'rounded-lg border-2 bg-slate-300 h-1/4 min-h-1/4';
+    // //recipeImage.src = recipeObject;
+    // recipeName.innerHTML = recipeObject;
+
+    //content.innerHTML += `<p>${obj}</p>`;
 };
 
 const sendPost = async (recipeForm) => {
@@ -14,6 +24,7 @@ const sendPost = async (recipeForm) => {
 
     const name = recipeForm.querySelector('#nameField').value;
     const description = recipeForm.querySelector('#descriptionField').value;
+    const imageField = recipeForm.querySelector('#imageField').value;
     const prepTimeHours = recipeForm.querySelector('#prepTimeHours').value;
     const prepTimeMin = recipeForm.querySelector('#prepTimeMin').value;
     const cookTimeHours = recipeForm.querySelector('#cookTimeHours').value;
@@ -23,18 +34,7 @@ const sendPost = async (recipeForm) => {
     const ingredients = recipeForm.querySelector('#ingredientsField').value;
     const steps = recipeForm.querySelector('#stepsField').value;
 
-    console.log(name);
-    console.log(description);
-    console.log(prepTimeHours);
-    console.log(prepTimeMin);
-    console.log(cookTimeHours);
-    console.log(cookTimeMin);
-    console.log(difficulty);
-    console.log(rating);
-    console.log(ingredients);
-    console.log(steps);
-
-    const formData = `name=${name}&description=${description}$prepTimeHours=${prepTimeHours}&prepTimeMin=${prepTimeMin}&cookTimeHours=${cookTimeHours}&cookTimeMin=${cookTimeMin}&difficulty=${difficulty}&rating=${rating}&ingredients=${ingredients}&steps=${steps}`;
+    const formData = `name=${name}&description=${description}&imageField=${imageField}&prepTimeHours=${prepTimeHours}&prepTimeMin=${prepTimeMin}&cookTimeHours=${cookTimeHours}&cookTimeMin=${cookTimeMin}&difficulty=${difficulty}&rating=${rating}&ingredients=${ingredients}&steps=${steps}`;
 
     const response = await fetch(nameAction, {
         method: nameMethod,
@@ -48,40 +48,35 @@ const sendPost = async (recipeForm) => {
     handleResponse(response);
 };
 
-const requestUpdate = async (recipeForm) => {
-    const url = userForm.querySelector('#urlField').value;
-    const method = userForm.querySelector('#methodSelect').value;
+// const requestUpdate = async (recipeForm) => {
+//     const url = recipeForm.querySelector('#urlField').value;
+//     const method = recipeForm.querySelector('#methodSelect').value;
 
-    // 'method,' is equivalent to method: method,
-    const response = await fetch(url, {
-        method,
-        headers: {
-            'Accept': 'application/json'
-        }
-    });
+//     // 'method,' is equivalent to method: method,
+//     const response = await fetch(url, {
+//         method,
+//         headers: {
+//             'Accept': 'application/json'
+//         }
+//     });
 
-    //handleResponse(response, true);
-    handleResponse(response);
+//     handleResponse(response);
+// };
 
-};
+const renderRecipe = () => {
+
+}
 
 
 const init = () => {
-    const nameForm = document.querySelector('#nameForm');
-    const addUser = (e) => {
+    const recipeForm = document.querySelector('#recipeForm');
+    const addRecipe = (e) => {
         e.preventDefault();
-        sendPost(nameForm);
+        sendPost(recipeForm);
+
         return false;
     }
-    nameForm.addEventListener('submit', addUser);
-
-    const userForm = document.querySelector('#userForm');
-    userForm.addEventListener('submit', (e) => {
-        e.preventDefault();
-        requestUpdate(userForm);
-        //sendPost(nameForm);
-        return false;
-    });
+    recipeForm.addEventListener('submit', addRecipe);
 };
 
 window.onload = init;

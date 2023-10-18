@@ -30,25 +30,26 @@ const parseBody = (request, response, callback) => {
 
     callback(request, response, bodyParams);
   });
-}
+};
 
 const urlStruct = {
-  'GET': {
+  GET: {
     '/': htmlHandler.getIndex,
     '/output.css': htmlHandler.getCss,
     '/getRecipes': jsonHandler.getRecipes,
-    '/addRecipe': jsonHandler.addRecipe,
+    '/addNew.html': htmlHandler.addNew,
     '/notReal': jsonHandler.notFound,
     notFound: jsonHandler.notFound,
   },
-  'HEAD': {
+  HEAD: {
     '/getRecipes': jsonHandler.getRecipesMeta,
     '/notReal': jsonHandler.notFoundMeta,
     notFound: jsonHandler.notFoundMeta,
+
   },
-  'POST': {
-    '/addRecipe': (request, response) => parseBody(request, response, jsonHandler.addRecipe),
-  }
+  POST: {
+    '/': (request, response) => parseBody(request, response, jsonHandler.addRecipe),
+  },
 };
 
 const onRequest = (request, response) => {
@@ -57,17 +58,18 @@ const onRequest = (request, response) => {
   const params = query.parse(parsedUrl.query);
 
   if (!urlStruct[request.method]) {
-    return urlStruct['HEAD'].notFound(request, response);
+    return urlStruct.HEAD.notFound(request, response);
   }
 
   if (urlStruct[request.method][parsedUrl.pathname]) {
-    urlStruct[request.method][parsedUrl.pathname](request, response);
+    urlStruct[request.method][parsedUrl.pathname](request, response, params);
   } else {
     urlStruct[request.method].notFound(request, response);
   }
 
-  //console.log(`URL: ${request.url}`);
-  //console.dir(parsedUrl);
+  return true;
+  // console.log(`URL: ${request.url}`);
+  // console.dir(parsedUrl);
 };
 
 http.createServer(onRequest).listen(port, () => {
