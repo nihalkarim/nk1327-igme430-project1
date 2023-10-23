@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Add New Recipe</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link href="/style.css" rel="stylesheet">
+    <link href="/output.css" rel="stylesheet">
+
+    <script src="https://kit.fontawesome.com/306d133c2c.js" crossorigin="anonymous"></script>
+
+    <script src="bundle.js"></script>
+
+    <script>
+    </script>
+</head>
+
+<body>
+    <!-- NOT USED, WORK IN PROGRESS -->
+    <form id="recipeForm" action="/addRecipe" method="post" class="grid grid-cols-3 gap-5 m-5" target="">
+        <div class="">
+            <!-- name -->
+            <div class="w-full my-2" id="nameDiv">
+                <label class="block uppercase text-gray-700 text-xs font-bold mb-2" for="name">
+                    Name </label>
+            </div>
+
+
+            <!-- description -->
+            <div class="w-full" id="descriptionDiv">
+                <label class="block uppercase text-gray-700 text-xs font-bold mb-2"
+                    for="description">Description</label>
+            </div>
+
+            <!-- image link -->
+            <div class="w-full" id="imageDiv">
+            </div>
+
+            <br>
+            <!-- prep time -->
+            <div class="flex flex-row" id="prepTimeDiv">
+                <div class="pl-4">
+                    <i class="fa-regular fa-clock"></i>
+                    <span>Prep Time: </span>
+                </div>
+            </div>
+
+            <br>
+            <!-- cook time -->
+            <div class="flex flex-row p-4" id="cookTimeDiv">
+                <div class="pl-4">
+                    <i class="fa-solid fa-clock"></i>
+                    <span>Cook Time: </span>
+                </div>
+            </div>
+
+            <br>
+            <!-- difficulty -->
+            <div id="difficultyDiv">
+                <span>Difficulty: </span>
+            </div>
+
+            <br>
+            <!-- rating -->
+            <div id="ratingDiv">
+                <span>Rating: </span>
+            </div>
+        </div>
+
+        <!-- ingredients -->
+        <div class="" id="ingredientsDiv">
+            <label for="description" class="block uppercase text-gray-700 text-xs font-bold mb-2">Ingredients </label>
+
+        </div>
+
+        <div class="" id="stepsDiv">
+            <!-- steps -->
+            <label for="steps">Steps: </label>
+            <input id="stepsField" type="text" name="steps" />
+            <!-- add recipe -->
+            <input type="submit" name="addRecipe" id="addRecipe" value="Add Recipe" class="border bg-red"
+                href="client.html">
+        </div>
+    </form>
+</body>
+
+</html>

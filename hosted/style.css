@@ -1,3 +1,47 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* #content {
+    display: grid;
+    grid-template-columns: 8;
+    gap: 5;
+}
+
+#left {
+    width: 20%;
+    height: 100vh;
+    background-color: rgb(237 233 254);
+}
+
+#left>button {
+    background-color: rgb(237 233 254);
+    border: transparent;
+    border-radius: 0.375rem;
+    padding: 0.5rem;
+    margin-left: 0.5rem;
+    margin-right: 0.5rem;
+    margin-top: 1em;
+    color: white;
+}
+
+#left>button:hover {
+    background-color: rgb(237 233 254);
+    border: rgb(237 233 254);
+}
+
+#recipeGrid {
+    height: 100vh;
+    overflow-y: scroll;
+    padding-top: 1.5rem;
+    padding-bottom: 2rem;
+    padding-right: 1rem;
+}
+
+#recipeGrid>#recipeDiv {
+
+}
+
+#recipeGrid>img {
+    object-fit: contain;
+} */

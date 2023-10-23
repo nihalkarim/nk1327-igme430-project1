@@ -11,6 +11,7 @@ const respondMeta = (request, response, status) => {
   response.end();
 };
 
+// gets recipes to user
 const getRecipes = (request, response) => {
   const responseJSON = { recipes };
 
@@ -19,6 +20,8 @@ const getRecipes = (request, response) => {
 
 const getRecipesMeta = (request, response) => respondMeta(request, response, 200);
 
+// adds recipe to the recipes object.
+// name and image are both required
 const addRecipe = (request, response, body) => {
   const responseJSON = {
     message: 'Recipe name and image link are required',
@@ -54,6 +57,7 @@ const addRecipe = (request, response, body) => {
   return respond(request, response, responseCode);
 };
 
+// returns 404 response when page not found
 const notFound = (request, response) => {
   const responseJSON = {
     message: 'The page you are looking for was not found.',

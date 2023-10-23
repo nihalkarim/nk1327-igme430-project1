@@ -6,6 +6,12 @@ const jsonHandler = require('./jsonResponses.js');
 
 const port = process.env.PORT || process.env.NODE_PORT || 3000;
 
+/**
+ * Parses the request body.Pushes the data to the body in chunks. Check if there aare errors
+ * @param {*} request: request
+ * @param {*} response: sets response for user
+ * @param {*} callback: callback function for server
+ */
 const parseBody = (request, response, callback) => {
   const body = [];
 
@@ -20,13 +26,9 @@ const parseBody = (request, response, callback) => {
   });
 
   request.on('end', () => {
-    console.log(body);
-
     const bodyString = Buffer.concat(body).toString();
-    console.log(bodyString);
 
     const bodyParams = query.parse(bodyString);
-    console.log(bodyParams);
 
     callback(request, response, bodyParams);
   });
@@ -35,23 +37,29 @@ const parseBody = (request, response, callback) => {
 const urlStruct = {
   GET: {
     '/': htmlHandler.getIndex,
-    '/output.css': htmlHandler.getCss,
+    '/output.css': htmlHandler.getOutputCss,
+    '/style.css': htmlHandler.getStyleCss,
     '/getRecipes': jsonHandler.getRecipes,
-    '/addNew.html': htmlHandler.addNew,
-    '/notReal': jsonHandler.notFound,
+    '/addNew': htmlHandler.addNew,
+    '/bundle.js': htmlHandler.getBundle,
     notFound: jsonHandler.notFound,
   },
   HEAD: {
     '/getRecipes': jsonHandler.getRecipesMeta,
-    '/notReal': jsonHandler.notFoundMeta,
     notFound: jsonHandler.notFoundMeta,
-
   },
   POST: {
-    '/': (request, response) => parseBody(request, response, jsonHandler.addRecipe),
+    '/addRecipe': (request, response) => parseBody(request, response, jsonHandler.addRecipe),
+    notFound: jsonHandler.notFoundMeta,
   },
 };
 
+/**
+ * Deals with the requests made to server
+ * @param {*} request
+ * @param {*} response
+ * @returns
+ */
 const onRequest = (request, response) => {
   const parsedUrl = url.parse(request.url);
 

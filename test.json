@@ -1,0 +1,22 @@
+{
+    "recipes": {
+        "matcha": {
+            "name": "matcha",
+            "description": "",
+            "image": "https://www.google.com/url?sa=i",
+            "difficulty": "",
+            "rating": "",
+            "ingredients": "",
+            "steps": ""
+        },
+        "tea": {
+            "name": "tea",
+            "description": "",
+            "image": "https://www.google.com/url?sa=i",
+            "difficulty": "",
+            "rating": "",
+            "ingredients": "",
+            "steps": ""
+        }
+    }
+}
